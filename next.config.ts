@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    domains: ['localhost', 'img.freepik.com', 'www.tanishq.co.in'], // Add localhost for development and external image domains
+  },
 };
 
 export default nextConfig;

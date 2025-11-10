@@ -1,26 +1,111 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --color-background: hsl(38 45% 95%);
+  --color-foreground: hsl(30 25% 20%);
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(30 25% 20%);
+  --color-popover: hsl(270 75% 75%);
+  --color-popover-foreground: hsl(30 25% 20%);
+  --color-primary: hsl(270 75% 75%);
+  --color-primary-foreground: hsl(38 45% 95%);
+  --color-secondary: hsl(270 75% 75%);
+  --color-secondary-foreground: hsl(30 25% 20%);
+  --color-muted: hsl(270 75% 75%);
+  --color-muted-foreground: hsl(30 15% 45%);
+  --color-accent: hsl(270 75% 75%);
+  --color-accent-foreground: hsl(0 0% 100%);
+  --color-destructive: hsl(0 84.2% 60.2%);
+  --color-destructive-foreground: hsl(0 0% 100%);
+  --color-border: hsl(38 20% 88%);
+  --color-input: hsl(38 20% 88%);
+  --color-ring: hsl(30 25% 20%);
+  --radius: 0.75rem;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Custom jewelry theme tokens */
+  --color-cream: hsl(38 45% 95%);
+  --color-terracotta: hsl(25 60% 65%);
+  --color-warm-beige: hsl(28 38% 80%);
+  --color-elegant-shadow: hsl(30 20% 85%);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  @theme {
+    --color-background: hsl(30 25% 12%);
+    --color-foreground: hsl(38 45% 95%);
+    --color-card: hsl(30 25% 15%);
+    --color-card-foreground: hsl(38 45% 95%);
+    --color-popover: hsl(30 25% 15%);
+    --color-popover-foreground: hsl(38 45% 95%);
+    --color-primary: hsl(38 45% 95%);
+    --color-primary-foreground: hsl(30 25% 20%);
+    --color-secondary: hsl(30 20% 25%);
+    --color-secondary-foreground: hsl(38 45% 95%);
+    --color-muted: hsl(30 20% 25%);
+    --color-muted-foreground: hsl(38 25% 65%);
+    --color-accent: hsl(25 60% 65%);
+    --color-accent-foreground: hsl(0 0% 100%);
+    --color-destructive: hsl(0 62.8% 30.6%);
+    --color-destructive-foreground: hsl(38 45% 95%);
+    --color-border: hsl(30 20% 25%);
+    --color-input: hsl(30 20% 25%);
+    --color-ring: hsl(38 45% 95%);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
 }
