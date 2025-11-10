@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
 import Navigation from "@/app/components/Navigation";
 import {
     Select,
@@ -35,13 +35,13 @@ import Link from "next/link";
 
 const categories = ["All", "Rings", "Necklaces", "Earrings", "Bracelets"];
 
-const Shop = () => {
+const ShopContent = () => {
     const { products: globalProducts, loading, error } = useProducts();
     const [priceRange, setPriceRange] = useState([0, 5000]);
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [sortBy, setSortBy] = useState("featured");
     const searchParams = useSearchParams();
-    
+
     // Initialize search query from URL params using lazy initialization
     const [searchQuery, setSearchQuery] = useState(() => {
         // This will only run on initial mount, avoiding setState in effect
@@ -242,6 +242,14 @@ const Shop = () => {
                 </div>
             </footer>
         </div>
+    );
+};
+
+const Shop = () => {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <ShopContent />
+        </Suspense>
     );
 };
 
