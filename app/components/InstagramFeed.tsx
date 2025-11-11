@@ -9,13 +9,13 @@ const InstagramFeed = () => {
     }, []);
 
     return (
-        <section className="py-20 px-6 bg-background">
+        <section className="py-16 sm:py-20 px-6 bg-background">
             <div className="container mx-auto">
-                <div className="text-center mb-12 space-y-4">
-                    <h2 className="text-4xl md:text-5xl font-playfair font-medium">
+                <div className="text-center mb-8 sm:mb-12 space-y-4">
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-playfair font-medium">
                         Follow Our Journey
                     </h2>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
                         Discover daily inspiration and behind-the-scenes moments from our atelier
                     </p>
                 </div>
@@ -24,20 +24,20 @@ const InstagramFeed = () => {
                     <iframe
                         src="//lightwidget.com/widgets/0f4796a7261e5009a1332c9e05a00a60.html"
                         scrolling="no"
-                        allowTransparency={true}
+                        // allowTransparency={true}
                         className="w-full"
                         style={{
                             border: 0,
                             overflow: 'hidden',
                             width: '100%',
-                            height: '400px',
+                            height: '300px',
                         }}
                         title="Instagram Feed"
                     />
                 </div>
 
-                <div className="text-center mt-8">
-                    <p className="text-muted-foreground">
+                <div className="text-center mt-6 sm:mt-8">
+                    <p className="text-sm sm:text-base text-muted-foreground">
                         Follow us on Instagram{' '}
                         <a
                             href="https://www.instagram.com/fashnovajewels"

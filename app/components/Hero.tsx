@@ -6,15 +6,15 @@ const Hero = () => {
   return (
     <section className="pt-24 pb-12 px-6">
       <div className="container mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 items-center min-h-[600px]">
-          <div className="space-y-6">
-            <h2 className="text-5xl md:text-6xl font-playfair font-medium leading-tight">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center min-h-[600px]">
+          <div className="space-y-6 hero-content">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-playfair font-medium leading-tight hero-title">
               Sparkle up your style with a piece of jewelry from the glam collection
             </h2>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-muted-foreground text-base sm:text-lg">
               Each season&apos;s most sought-after customer favorite designs - curated just for you
             </p>
-            <Button variant="cta" size="lg" className="rounded-full">
+            <Button variant="cta" size="lg" className="rounded-full btn-responsive">
               Buy Now
             </Button>
           </div>

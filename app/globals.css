@@ -67,6 +67,112 @@ All colors MUST be HSL.
   }
 }
 
+/* Responsive Design Media Queries */
+@media (max-width: 768px) {
+  /* Mobile styles */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Hero section mobile adjustments */
+  .hero-content {
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+
+  /* Navigation mobile improvements */
+  .nav-mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+  }
+
+  /* Product grids for mobile */
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  /* Cart and checkout mobile */
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cart-item img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+
+  /* Form inputs mobile */
+  .form-input {
+    width: 100%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Tablet styles */
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  /* Hero section tablet adjustments */
+  .hero-title {
+    font-size: 3.5rem;
+  }
+
+  /* Product grids for tablet */
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* Navigation tablet */
+  .nav-tablet {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+/* Additional responsive utilities */
+@media (max-width: 640px) {
+  .text-responsive {
+    font-size: 0.875rem;
+  }
+
+  .btn-responsive {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  /* Desktop styles */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;

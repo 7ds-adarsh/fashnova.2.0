@@ -26,9 +26,10 @@ import { useCart } from "@/app/context/CartContext";
 import { useProducts } from "@/app/context/ProductContext";
 import { useWishlist } from "@/app/context/WishlistContext";
 import { useSession } from "next-auth/react";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, Loader2 } from "lucide-react";
 import { Heart } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import { useToast } from "@/app/hooks/use-toast";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -41,6 +42,7 @@ const ShopContent = () => {
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [sortBy, setSortBy] = useState("featured");
     const searchParams = useSearchParams();
+    const { toast } = useToast();
 
     // Initialize search query from URL params using lazy initialization
     const [searchQuery, setSearchQuery] = useState(() => {
@@ -59,6 +61,17 @@ const ShopContent = () => {
             return () => clearTimeout(timer);
         }
     }, [searchParams, searchQuery]);
+
+    // Show error toast if there's an error
+    useEffect(() => {
+        if (error) {
+            toast({
+                title: "Error loading products",
+                description: "Failed to load products. Please try again.",
+                variant: "destructive",
+            });
+        }
+    }, [error, toast]);
 
     // Use global products from API
     const productsToUse = globalProducts;
@@ -227,11 +240,18 @@ const ShopContent = () => {
 
                         {/* Product Grid */}
                         <div className="flex-1">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                                {filteredProducts.map((product) => (
-                                    <ProductCard key={product._id || product.id} product={product} />
-                                ))}
-                            </div>
+                            {loading ? (
+                                <div className="flex justify-center items-center py-12">
+                                    <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" />
+                                    <span className="ml-2 text-muted-foreground">Loading products...</span>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 product-grid">
+                                    {filteredProducts.map((product) => (
+                                        <ProductCard key={product._id || product.id} product={product} />
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

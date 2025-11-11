@@ -7,8 +7,8 @@ const Heritage = () => {
   return (
     <section className="py-16 px-6 bg-secondary/30">
       <div className="container mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-3 gap-4 sm:gap-6">
             <div className="aspect-square rounded-full overflow-hidden bg-card shadow-lg">
               <Image
                 src={product1}
@@ -37,12 +37,12 @@ const Heritage = () => {
               />
             </div>
           </div>
-          
-          <div className="space-y-4">
-            <h3 className="text-4xl font-playfair font-medium tracking-widest">
+
+          <div className="space-y-4 text-center md:text-left">
+            <h3 className="text-3xl sm:text-4xl font-playfair font-medium tracking-widest">
               SINCE 1952
             </h3>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-base sm:text-lg text-muted-foreground">
               Sparkle up your style with a piece of jewelry from the glam collection
             </p>
           </div>

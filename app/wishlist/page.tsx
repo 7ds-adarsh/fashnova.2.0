@@ -8,7 +8,7 @@ import { useWishlist } from "@/app/context/WishlistContext";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Heart } from "lucide-react";
+import { Heart, Loader2 } from "lucide-react";
 import { useEffect } from "react";
 
 const Wishlist = () => {
@@ -48,6 +48,7 @@ const Wishlist = () => {
                 <main className="pt-24 pb-16 px-6">
                     <div className="container mx-auto max-w-6xl">
                         <div className="text-center py-12">
+                            <Loader2 className="w-8 h-8 animate-spin text-muted-foreground mx-auto mb-4" />
                             <p className="text-muted-foreground">Loading wishlist...</p>
                         </div>
                     </div>
@@ -66,8 +67,8 @@ const Wishlist = () => {
             <main className="pt-24 pb-16 px-6">
                 <div className="container mx-auto max-w-6xl">
                     <div className="mb-8">
-                        <h1 className="text-4xl font-playfair font-medium mb-2">My Wishlist</h1>
-                        <p className="text-muted-foreground">Your favorite pieces waiting to be yours</p>
+                        <h1 className="text-3xl sm:text-4xl font-playfair font-medium mb-2">My Wishlist</h1>
+                        <p className="text-sm sm:text-base text-muted-foreground">Your favorite pieces waiting to be yours</p>
                     </div>
 
                     {wishlistProducts.length > 0 ? (
@@ -108,9 +109,9 @@ const Wishlist = () => {
                         </div>
                     ) : (
                         <div className="text-center py-12">
-                            <Heart className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-                            <h2 className="text-2xl font-playfair font-medium mb-2">Your wishlist is empty</h2>
-                            <p className="text-muted-foreground mb-6">Start adding your favorite pieces to your wishlist</p>
+                            <Heart className="w-12 sm:w-16 h-12 sm:h-16 mx-auto mb-4 text-muted-foreground" />
+                            <h2 className="text-xl sm:text-2xl font-playfair font-medium mb-2">Your wishlist is empty</h2>
+                            <p className="text-sm sm:text-base text-muted-foreground mb-6">Start adding your favorite pieces to your wishlist</p>
                             <Button onClick={() => router.push('/shop')}>Start Shopping</Button>
                         </div>
                     )}

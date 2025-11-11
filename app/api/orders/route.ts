@@ -16,7 +16,6 @@ export async function GET(request: NextRequest) {
         }
 
         const orders = await Order.find(query)
-            .populate('userId', 'name email mobile address')
             .select('-__v')
             .sort({ createdAt: -1 });
 

@@ -24,12 +24,12 @@ const NewsLetter = () => {
     };
 
     return (
-        <section className="py-16 px-6 bg-secondary/5">
+        <section className="py-12 sm:py-16 px-6 bg-secondary/5">
             <div className="container mx-auto max-w-4xl text-center">
-                <h2 className="text-3xl md:text-4xl font-playfair font-medium mb-4">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-playfair font-medium mb-4">
                     Subscribe to Our Newsletter
                 </h2>
-                <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
+                <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto">
                     Stay updated with our latest collections, exclusive offers, and jewelry care tips.
                     Join our community of jewelry enthusiasts.
                 </p>
@@ -41,14 +41,14 @@ const NewsLetter = () => {
                             placeholder="Enter your email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full border-secondary/20 focus:border-secondary/50 h-12"
+                            className="w-full border-secondary/20 focus:border-secondary/50 h-10 sm:h-12"
                             disabled={status === "loading" || status === "success"}
                         />
                     </div>
                     <Button
                         type="submit"
                         disabled={status === "loading" || status === "success"}
-                        className="h-12 px-8"
+                        className="h-10 sm:h-12 px-6 sm:px-8 btn-responsive"
                     >
                         {status === "loading" ? "Subscribing..." : "Subscribe"}
                     </Button>
