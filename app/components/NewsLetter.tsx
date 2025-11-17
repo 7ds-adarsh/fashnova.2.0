@@ -43,12 +43,14 @@ const NewsLetter = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full border-secondary/20 focus:border-secondary/50 h-10 sm:h-12"
                             disabled={status === "loading" || status === "success"}
+                            suppressHydrationWarning={true}
                         />
                     </div>
                     <Button
                         type="submit"
                         disabled={status === "loading" || status === "success"}
                         className="h-10 sm:h-12 px-6 sm:px-8 btn-responsive"
+                        suppressHydrationWarning={true}
                     >
                         {status === "loading" ? "Subscribing..." : "Subscribe"}
                     </Button>

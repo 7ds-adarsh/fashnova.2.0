@@ -38,7 +38,7 @@ const BestSeller = () => {
           <h3 className="text-4xl font-playfair font-medium">
             Best Seller
           </h3>
-          <button className="text-sm text-muted-foreground hover:text-accent transition-colors">
+          <button className="text-sm text-muted-foreground hover:text-accent transition-colors" suppressHydrationWarning={true}>
             See More
           </button>
         </div>
@@ -76,6 +76,7 @@ const BestSeller = () => {
                               size="sm"
                               onClick={(e) => { e.preventDefault(); handleAddToCart(product); }}
                               className="mt-2 w-full"
+                              suppressHydrationWarning={true}
                             >
                               Add to cart
                             </Button>

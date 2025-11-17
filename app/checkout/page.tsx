@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navigation from "@/app/components/Navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
@@ -8,12 +8,16 @@ import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { Separator } from "@/app/components/ui/separator";
 import { useCart } from "@/app/context/CartContext";
+import { useProducts } from "@/app/context/ProductContext";
+import { useToast } from "@/app/hooks/use-toast";
 import Link from "next/link";
-import { CreditCard, Truck, Shield } from "lucide-react";
+import { CreditCard, Truck, Shield, AlertTriangle } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const CheckoutPage = () => {
   const { cart, getTotal, clearCart } = useCart();
+  const { products: globalProducts } = useProducts();
+  const { toast } = useToast();
   const router = useRouter()
   const [formData, setFormData] = useState({
     firstName: "",
@@ -31,6 +35,31 @@ const CheckoutPage = () => {
     nameOnCard: "",
   });
   const [isProcessing, setIsProcessing] = useState(false);
+  const [stockValidation, setStockValidation] = useState<{[key: string]: {available: number, isValid: boolean}}>({});
+
+  // Validate stock for cart items
+  useEffect(() => {
+    const validateStock = async () => {
+      const validation: {[key: string]: {available: number, isValid: boolean}} = {};
+
+      for (const item of cart) {
+        const product = globalProducts.find(p => p._id === item.id || p.id?.toString() === item.id);
+        if (product && product.stockQuantity !== undefined) {
+          const availableStock = (product.stockQuantity || 0) - (product.reservedStock || 0);
+          validation[item.id] = {
+            available: availableStock,
+            isValid: item.quantity <= availableStock
+          };
+        }
+      }
+
+      setStockValidation(validation);
+    };
+
+    if (cart.length > 0 && globalProducts.length > 0) {
+      validateStock();
+    }
+  }, [cart, globalProducts]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -42,10 +71,26 @@ const CheckoutPage = () => {
 
     try {
       // Validate form data before submitting
-      if (!formData.firstName || !formData.lastName || !formData.email || 
-          !formData.phone || !formData.address || !formData.city || 
+      if (!formData.firstName || !formData.lastName || !formData.email ||
+          !formData.phone || !formData.address || !formData.city ||
           !formData.state || !formData.zipCode || !formData.country) {
         alert('Please fill in all required shipping information fields.');
+        setIsProcessing(false);
+        return;
+      }
+
+      // Validate stock availability before submitting
+      const invalidItems = Object.entries(stockValidation).filter(([_, validation]) => !validation.isValid);
+      if (invalidItems.length > 0) {
+        const itemNames = invalidItems.map(([id]) => {
+          const item = cart.find(item => item.id === id);
+          return item?.name || 'Unknown item';
+        }).join(', ');
+        toast({
+          title: "Insufficient Stock",
+          description: `Some items are no longer available: ${itemNames}. Please update your cart.`,
+          variant: "destructive",
+        });
         setIsProcessing(false);
         return;
       }
@@ -166,6 +211,12 @@ const CheckoutPage = () => {
                         <div>
                           <p className="font-medium text-sm">{item.name}</p>
                           <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
+                          {stockValidation[item.id] && !stockValidation[item.id].isValid && (
+                            <div className="flex items-center gap-1 text-red-600 text-xs">
+                              <AlertTriangle className="w-3 h-3" />
+                              <span>Only {stockValidation[item.id].available} available</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                       <p className="font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
@@ -371,7 +422,12 @@ const CheckoutPage = () => {
                 </CardContent>
               </Card>
 
-              <Button type="submit" size="lg" className="w-full" disabled={isProcessing}>
+              <Button
+                type="submit"
+                size="lg"
+                className="w-full"
+                disabled={isProcessing || Object.values(stockValidation).some(v => !v.isValid)}
+              >
                 {isProcessing ? "Processing..." : `Complete Order - $${total.toFixed(2)}`}
               </Button>
             </div>

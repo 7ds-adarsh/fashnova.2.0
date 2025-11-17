@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/app/lib/db";
 import Order from "@/app/models/Order";
+import Product from "@/app/models/Product";
 import { sendOrderConfirmationEmail } from "@/app/lib/email";
 
 export async function GET(request: NextRequest) {
@@ -39,6 +40,28 @@ export async function POST(request: NextRequest) {
         if (!orderId || !date || !status || !total || !items || !userEmail || !shippingAddress || items.length === 0) {
             console.error("Missing required fields:", { orderId, date, status, total, items: !!items, userEmail, username, shippingAddress: !!shippingAddress });
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+        }
+
+        // Check inventory availability for each item
+        for (const item of items) {
+            const product = await Product.findOne({ name: item.name });
+            if (!product) {
+                return NextResponse.json({ error: `Product ${item.name} not found` }, { status: 400 });
+            }
+            const availableStock = product.stockQuantity - product.reservedStock;
+            if (availableStock < item.quantity) {
+                return NextResponse.json({
+                    error: `Insufficient stock for ${item.name}. Available: ${availableStock}, Requested: ${item.quantity}`
+                }, { status: 400 });
+            }
+        }
+
+        // Reserve stock for each item
+        for (const item of items) {
+            await Product.findOneAndUpdate(
+                { name: item.name },
+                { $inc: { reservedStock: item.quantity } }
+            );
         }
 
         // Validate shipping address fields

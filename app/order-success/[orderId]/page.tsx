@@ -36,7 +36,9 @@ const OrderSuccess = () => {
             try {
                 const response = await fetch(`/api/orders/${orderId}`);
                 if (!response.ok) {
-                    throw new Error('Failed to fetch order');
+                    console.error('Failed to fetch order:', response.status, response.statusText);
+                    router.push('/orders');
+                    return;
                 }
                 const data = await response.json();
                 setOrder(data.order);

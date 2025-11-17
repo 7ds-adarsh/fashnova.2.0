@@ -183,6 +183,7 @@ const Navigation = () => {
                        transition-all duration-300 pr-12
                        hover:border-secondary/30"
               aria-label="Search collections"
+              suppressHydrationWarning={true}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   const query = (e.target as HTMLInputElement).value.trim();
@@ -197,6 +198,7 @@ const Navigation = () => {
                            text-secondary transition-all duration-300
                            focus:outline-none focus:ring-2 focus:ring-secondary/20"
               aria-label="Submit search"
+              suppressHydrationWarning={true}
               onClick={() => {
                 const input = document.querySelector('input[placeholder="Search collections..."]') as HTMLInputElement;
                 const query = input?.value.trim();

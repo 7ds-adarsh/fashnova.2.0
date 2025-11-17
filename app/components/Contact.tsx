@@ -51,7 +51,7 @@ const Contact = () => {
             <p className="text-base sm:text-lg text-muted-foreground">
               Sparkle up your style with a piece of jewelry from the glam collection
             </p>
-            <Button variant="secondary" size="lg" className="rounded-full btn-responsive">
+            <Button onClick={(e) => {window.location.href = "/contact"}} variant="secondary" size="lg" className="rounded-full btn-responsive cursor-pointer hover:bg-accent" suppressHydrationWarning={true}>
               Contact Us
             </Button>
           </div>

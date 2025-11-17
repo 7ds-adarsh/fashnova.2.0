@@ -28,6 +28,10 @@ interface ProductType {
     image: string;
     description?: string;
     category?: string;
+    stockQuantity?: number;
+    reservedStock?: number;
+    minStockThreshold?: number;
+    sku?: string;
 }
 
 const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
@@ -126,6 +130,15 @@ const ProductDetailPage = ({ params }: ProductDetailPageProps) => {
                                 <h1 className="text-2xl sm:text-3xl font-playfair font-medium mb-2">{product.name}</h1>
                                 <p className="text-xl sm:text-2xl font-semibold text-accent">${product.price}</p>
                                 <p className="text-sm text-muted-foreground mt-1">{product.category}</p>
+                                {product.stockQuantity !== undefined && (
+                                    <div className="mt-2">
+                                        {product.stockQuantity - (product.reservedStock || 0) > 0 ? (
+                                            <p className="text-sm text-green-600">In Stock ({product.stockQuantity - (product.reservedStock || 0)} available)</p>
+                                        ) : (
+                                            <p className="text-sm text-red-600">Out of Stock</p>
+                                        )}
+                                    </div>
+                                )}
                             </div>
 
                             <div>
@@ -172,11 +185,27 @@ interface ProductType {
 
 const AddToCartButton = ({ product }: { product: ProductType }) => {
     const { addToCart } = useCart();
-    const handleAddToCart = () => addToCart({ id: product._id || product.id?.toString() || '', name: product.name, price: product.price, image: product.image });
+    const { toast } = useToast();
+
+    const handleAddToCart = () => {
+        const availableStock = (product.stockQuantity || 0) - (product.reservedStock || 0);
+        if (availableStock <= 0) {
+            toast({
+                title: "Out of Stock",
+                description: "This product is currently out of stock.",
+                variant: "destructive",
+            });
+            return;
+        }
+        addToCart({ id: product._id || product.id?.toString() || '', name: product.name, price: product.price, image: product.image });
+    };
+
+    const availableStock = (product.stockQuantity || 0) - (product.reservedStock || 0);
+    const isOutOfStock = availableStock <= 0;
 
     return (
-        <Button size="lg" className="flex-1" onClick={handleAddToCart}>
-            Add to Cart
+        <Button size="lg" className="flex-1" onClick={handleAddToCart} disabled={isOutOfStock}>
+            {isOutOfStock ? "Out of Stock" : "Add to Cart"}
         </Button>
     );
 };

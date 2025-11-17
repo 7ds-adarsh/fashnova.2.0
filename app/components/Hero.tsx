@@ -14,7 +14,7 @@ const Hero = () => {
             <p className="text-muted-foreground text-base sm:text-lg">
               Each season&apos;s most sought-after customer favorite designs - curated just for you
             </p>
-            <Button variant="cta" size="lg" className="rounded-full btn-responsive">
+            <Button onClick={(e) => {window.location.href = '/shop'}} variant="cta" size="lg" className="rounded-full btn-responsive" suppressHydrationWarning={true}>
               Buy Now
             </Button>
           </div>

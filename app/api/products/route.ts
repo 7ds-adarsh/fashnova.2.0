@@ -7,12 +7,12 @@ export async function POST(request: NextRequest) {
         await connectDB();
 
         const body = await request.json();
-        const { name, price, category, image, description } = body;
+        const { name, price, category, image, description, stockQuantity, minStockThreshold } = body;
 
         // Validate required fields
         if (!name || !price || !category || !image || !description) {
             return NextResponse.json(
-                { error: "All fields are required" },
+                { error: "Name, price, category, image, and description are required" },
                 { status: 400 }
             );
         }
@@ -24,6 +24,9 @@ export async function POST(request: NextRequest) {
             category,
             image,
             description,
+            stockQuantity: stockQuantity || 0,
+            reservedStock: 0,
+            minStockThreshold: minStockThreshold || 5,
         });
 
         const savedProduct = await newProduct.save();

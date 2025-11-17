@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/app/lib/db";
 import Order from "@/app/models/Order";
+import Product from "@/app/models/Product";
 
 export async function GET(
     request: NextRequest,
@@ -11,7 +12,6 @@ export async function GET(
 
         const { id } = await params;
         const order = await Order.findOne({ orderId: id })
-            .populate('userId', 'name email mobile address')
             .select('-__v');
 
         if (!order) {
@@ -45,17 +45,43 @@ export async function PUT(
         if (trackingNumber !== undefined) updateData.trackingNumber = trackingNumber;
 
         const { id } = await params;
+        const order = await Order.findOne({ orderId: id });
+
+        if (!order) {
+            return NextResponse.json({ error: "Order not found" }, { status: 404 });
+        }
+
+        // If status is being changed to "Shipped" or "Delivered", decrement reserved stock and update stock quantity
+        if (status && (status === "Shipped" || status === "Delivered") && order.status === "Processing") {
+            for (const item of order.items) {
+                await Product.findOneAndUpdate(
+                    { name: item.name },
+                    {
+                        $inc: {
+                            reservedStock: -item.quantity,
+                            stockQuantity: -item.quantity
+                        }
+                    }
+                );
+            }
+        }
+
+        // If status is being changed back to "Processing" from "Shipped" or "Delivered", restore reserved stock
+        if (status && status === "Processing" && (order.status === "Shipped" || order.status === "Delivered")) {
+            for (const item of order.items) {
+                await Product.findOneAndUpdate(
+                    { name: item.name },
+                    { $inc: { reservedStock: item.quantity } }
+                );
+            }
+        }
+
         const updatedOrder = await Order.findOneAndUpdate(
             { orderId: id },
             updateData,
             { new: true }
         )
-            .populate('userId', 'name email mobile address')
             .select('-__v');
-
-        if (!updatedOrder) {
-            return NextResponse.json({ error: "Order not found" }, { status: 404 });
-        }
 
         return NextResponse.json({
             message: "Order updated successfully",

@@ -5,7 +5,6 @@ import Heritage from "@/app/components/Heritage";
 import BestSeller from "@/app/components/BestSeller";
 import InstagramFeed from "@/app/components/InstagramFeed";
 import ContactComponent from "@/app/components/Contact";
-// import CartDrawer from "@/app/components/CartDrawer";
 import NewsLetter from "@/app/components/NewsLetter";
 
 export default function Home() {

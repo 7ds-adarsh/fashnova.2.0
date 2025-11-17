@@ -6,6 +6,9 @@ export interface IProduct extends Document {
     category: string;
     image: string;
     description: string;
+    stockQuantity: number;
+    reservedStock: number;
+    minStockThreshold: number;
 }
 
 const ProductSchema = new Schema<IProduct>(
@@ -15,6 +18,9 @@ const ProductSchema = new Schema<IProduct>(
         category: { type: String, required: true },
         image: { type: String, required: true },
         description: { type: String, required: true },
+        stockQuantity: { type: Number, required: true, default: 0 },
+        reservedStock: { type: Number, required: true, default: 0 },
+        minStockThreshold: { type: Number, required: true, default: 5 },
     },
     { timestamps: true }
 );

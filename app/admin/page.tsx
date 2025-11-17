@@ -36,6 +36,9 @@ const AdminDashboard = () => {
         category: string;
         image: string;
         description: string;
+        stockQuantity?: number;
+        minStockThreshold?: number;
+        sku: string;
     }
 
     interface Order {
@@ -66,7 +69,9 @@ const AdminDashboard = () => {
         price: "",
         category: "",
         image: "",
-        description: ""
+        description: "",
+        stockQuantity: 0,
+        minStockThreshold: 0,
     });
 
     const [editingOrder, setEditingOrder] = useState<Order | null>(null);
@@ -132,6 +137,8 @@ const AdminDashboard = () => {
                     category: productForm.category,
                     image: productForm.image,
                     description: productForm.description,
+                    stockQuantity: productForm.stockQuantity,
+                    minStockThreshold: productForm.minStockThreshold,
                 }),
             });
 
@@ -146,7 +153,7 @@ const AdminDashboard = () => {
                     image: data.product.image,
                     description: data.product.description,
                 }]);
-                setProductForm({ name: "", price: "", category: "", image: "", description: "" });
+                setProductForm({ name: "", price: "", category: "", image: "", description: "", stockQuantity: 0, minStockThreshold: 0});
                 setIsProductDialogOpen(false);
                 alert('Product added successfully!');
             } else {
@@ -166,7 +173,9 @@ const AdminDashboard = () => {
             price: product.price.toString(),
             category: product.category,
             image: product.image,
-            description: product.description
+            description: product.description,
+            stockQuantity: product.stockQuantity || 0,
+            minStockThreshold: product.minStockThreshold || 0,
         });
         setIsProductDialogOpen(true);
     };
@@ -185,6 +194,8 @@ const AdminDashboard = () => {
                     category: productForm.category,
                     image: productForm.image,
                     description: productForm.description,
+                    stockQuantity: productForm.stockQuantity,
+                    minStockThreshold: productForm.minStockThreshold,
                 }),
             });
 
@@ -204,7 +215,7 @@ const AdminDashboard = () => {
                         : p
                 ));
                 setEditingProduct(null);
-                setProductForm({ name: "", price: "", category: "", image: "", description: "" });
+                setProductForm({ name: "", price: "", category: "", image: "", description: "", stockQuantity: 0, minStockThreshold: 0});
                 setIsProductDialogOpen(false);
                 alert('Product updated successfully!');
             } else {
@@ -348,7 +359,7 @@ const AdminDashboard = () => {
                                     <DialogTrigger asChild>
                                         <Button onClick={() => {
                                             setEditingProduct(null);
-                                            setProductForm({ name: "", price: "", category: "", image: "", description: "" });
+                                            setProductForm({ name: "", price: "", category: "", image: "", description: "", stockQuantity: 0, minStockThreshold: 0});
                                         }}>
                                             <Plus className="w-4 h-4 mr-2" />
                                             Add Product
@@ -372,7 +383,7 @@ const AdminDashboard = () => {
                                                     <Label htmlFor="price">Price</Label>
                                                     <Input
                                                         id="price"
-                                                        type="number"
+                                                        type="text"
                                                         value={productForm.price}
                                                         onChange={(e) => setProductForm({ ...productForm, price: e.target.value })}
                                                     />
@@ -406,6 +417,26 @@ const AdminDashboard = () => {
                                                     value={productForm.description}
                                                     onChange={(e) => setProductForm({ ...productForm, description: e.target.value })}
                                                 />
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div>
+                                                    <Label htmlFor="stockQuantity">Stock Quantity</Label>
+                                                    <Input
+                                                        id="stockQuantity"
+                                                        type="number"
+                                                        value={productForm.stockQuantity}
+                                                        onChange={(e) => setProductForm({ ...productForm, stockQuantity: parseInt(e.target.value) })}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <Label htmlFor="minStockThreshold">Min Stock Threshold</Label>
+                                                    <Input
+                                                        id="minStockThreshold"
+                                                        type="number"
+                                                        value={productForm.minStockThreshold}
+                                                        onChange={(e) => setProductForm({ ...productForm, minStockThreshold: parseInt(e.target.value) })}
+                                                    />
+                                                </div>
                                             </div>
                                             <div className="flex gap-2">
                                                 <Button onClick={editingProduct ? handleUpdateProduct : handleAddProduct}>

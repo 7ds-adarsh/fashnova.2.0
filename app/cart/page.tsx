@@ -1,20 +1,61 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navigation from "@/app/components/Navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { Separator } from "@/app/components/ui/separator";
 import { useCart } from "@/app/context/CartContext";
+import { useProducts } from "@/app/context/ProductContext";
+import { useToast } from "@/app/hooks/use-toast";
 import Link from "next/link";
-import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
+import { Minus, Plus, Trash2, ShoppingBag, AlertTriangle } from "lucide-react";
 
 const CartPage = () => {
   const { cart, updateQuantity, removeFromCart, getTotal, clearCart } = useCart();
+  const { products: globalProducts } = useProducts();
+  const { toast } = useToast();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [stockValidation, setStockValidation] = useState<{[key: string]: {available: number, isValid: boolean}}>({});
+
+  // Validate stock for cart items
+  useEffect(() => {
+    const validateStock = async () => {
+      const validation: {[key: string]: {available: number, isValid: boolean}} = {};
+
+      for (const item of cart) {
+        const product = globalProducts.find(p => p._id === item.id || p.id?.toString() === item.id);
+        if (product && product.stockQuantity !== undefined) {
+          const availableStock = (product.stockQuantity || 0) - (product.reservedStock || 0);
+          validation[item.id] = {
+            available: availableStock,
+            isValid: item.quantity <= availableStock
+          };
+        }
+      }
+
+      setStockValidation(validation);
+    };
+
+    if (cart.length > 0 && globalProducts.length > 0) {
+      validateStock();
+    }
+  }, [cart, globalProducts]);
 
   const handleQuantityChange = (id: string, newQuantity: number) => {
+    const product = globalProducts.find(p => p._id === id || p.id?.toString() === id);
+    if (product && product.stockQuantity !== undefined) {
+      const availableStock = (product.stockQuantity || 0) - (product.reservedStock || 0);
+      if (newQuantity > availableStock) {
+        toast({
+          title: "Insufficient Stock",
+          description: `Only ${availableStock} items available for ${product.name}`,
+          variant: "destructive",
+        });
+        return;
+      }
+    }
     updateQuantity(id, newQuantity);
   };
 
@@ -86,6 +127,12 @@ const CartPage = () => {
                       <div className="flex-1">
                         <h3 className="font-semibold text-lg mb-1">{item.name}</h3>
                         <p className="text-muted-foreground mb-4">${item.price.toFixed(2)}</p>
+                        {stockValidation[item.id] && !stockValidation[item.id].isValid && (
+                          <div className="flex items-center gap-2 text-red-600 text-sm mb-2">
+                            <AlertTriangle className="w-4 h-4" />
+                            <span>Only {stockValidation[item.id].available} available</span>
+                          </div>
+                        )}
                         <div className="flex items-center gap-4">
                           <div className="flex items-center gap-2">
                             <Button
