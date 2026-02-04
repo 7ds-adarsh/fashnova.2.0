@@ -14,8 +14,8 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "AXELS - Luxury Jewelry",
-  description: "Discover exquisite jewelry pieces crafted with precision and elegance.",
+  title: "Fashnova - Trendsetting Fashion for the Modern You",
+  description: "Discover the latest trends in fashion with Fashnova. Explore our curated collection of stylish clothing, accessories, and more. Stay ahead of the fashion curve with Fashnova's trendsetting designs and timeless classics.",
 };
 
 export default function RootLayout({
