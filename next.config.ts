@@ -2,7 +2,16 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['localhost', 'img.freepik.com', 'www.tanishq.co.in', 'res.cloudinary.com', 'images.unsplash.com', 'images.pexels.com', 'cdn.shopify.com', 'cdn.caratlane.com'], // Add localhost for development and external image domains
+    remotePatterns: [
+      { protocol: "http", hostname: "localhost" },
+      { protocol: "https", hostname: "img.freepik.com" },
+      { protocol: "https", hostname: "www.tanishq.co.in" },
+      { protocol: "https", hostname: "res.cloudinary.com" },
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "images.pexels.com" },
+      { protocol: "https", hostname: "cdn.shopify.com" },
+      { protocol: "https", hostname: "cdn.caratlane.com" },
+    ],
   },
 };
 
