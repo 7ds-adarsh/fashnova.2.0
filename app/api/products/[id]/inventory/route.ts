@@ -19,7 +19,6 @@ export async function GET(
         const inventoryData = {
             id: product._id,
             name: product.name,
-            sku: product.sku,
             stockQuantity: product.stockQuantity,
             reservedStock: product.reservedStock,
             availableStock: product.stockQuantity - product.reservedStock,

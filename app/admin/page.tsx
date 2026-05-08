@@ -38,7 +38,7 @@ const AdminDashboard = () => {
         description: string;
         stockQuantity?: number;
         minStockThreshold?: number;
-        sku: string;
+        sku?: string;
     }
 
     interface Order {

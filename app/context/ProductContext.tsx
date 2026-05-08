@@ -10,6 +10,9 @@ interface Product {
   category: string;
   image: string;
   description: string;
+  stockQuantity?: number;
+  reservedStock?: number;
+  minStockThreshold?: number;
   createdAt?: string;
 }
 

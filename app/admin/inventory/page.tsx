@@ -1,4 +1,4 @@
-r"use client";
+"use client";
 import { useState, useEffect } from "react";
 import Navigation from "@/app/components/Navigation";
 import { Button } from "@/app/components/ui/button";
